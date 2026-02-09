@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html><body><canvas id='c' width='400' height='400'></canvas>
+<script>
+const c = document.getElementById('c');
+const ctx = c.getContext('2d');
+// Transparent background
+ctx.clearRect(0, 0, 400, 400);
+// Orange circle
+ctx.fillStyle = '#ff6600';
+ctx.beginPath();
+ctx.arc(200, 200, 150, 0, Math.PI * 2);
+ctx.fill();
+// White text
+ctx.fillStyle = '#ffffff';
+ctx.font = 'bold 72px Arial, sans-serif';
+ctx.textAlign = 'center';
+ctx.textBaseline = 'middle';
+ctx.fillText('PMD', 200, 200);
+</script></body></html>

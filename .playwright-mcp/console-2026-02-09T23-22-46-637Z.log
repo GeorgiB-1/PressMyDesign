@@ -1,0 +1,1 @@
+[      65ms] [ERROR] Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep) @ http://localhost:5175/node_modules/.vite/deps/three.js?v=42e8ab63:0
