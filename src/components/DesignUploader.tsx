@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from "react"
+import { useState, useCallback, useRef, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useSnapshot } from "valtio"
 import { removeBackground } from "@imgly/background-removal"
@@ -14,10 +14,11 @@ interface UploadZoneProps {
   onRemove: () => void
   bgRemoved: boolean
   bgRemoving: boolean
+  bgReady: boolean
   onToggleBgRemoval: () => void
 }
 
-function UploadZone({ label, image, fileName, onFile, onRemove, bgRemoved, bgRemoving, onToggleBgRemoval }: UploadZoneProps) {
+function UploadZone({ label, image, fileName, onFile, onRemove, bgRemoved, bgRemoving, bgReady, onToggleBgRemoval }: UploadZoneProps) {
   const [isDragOver, setIsDragOver] = useState(false)
 
   const openFilePicker = useCallback(() => {
@@ -40,6 +41,11 @@ function UploadZone({ label, image, fileName, onFile, onRemove, bgRemoved, bgRem
     },
     [onFile],
   )
+
+  // Status text logic
+  let statusText = "Ready"
+  if (bgRemoving) statusText = "Removing background…"
+  else if (bgReady && !bgRemoved) statusText = "Background removal ready"
 
   return (
     <div>
@@ -106,8 +112,14 @@ function UploadZone({ label, image, fileName, onFile, onRemove, bgRemoved, bgRem
                 <div className="text-sm font-semibold text-text-secondary truncate">
                   {fileName}
                 </div>
-                <div className="text-[11px] text-text-muted mt-0.5">
-                  {bgRemoving ? "Removing background…" : "Ready"}
+                <div className="flex items-center gap-1.5 mt-0.5">
+                  {bgRemoving && (
+                    <svg className="animate-spin h-3 w-3 text-accent/70 shrink-0" viewBox="0 0 24 24" fill="none">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                  )}
+                  <span className="text-[11px] text-text-muted">{statusText}</span>
                 </div>
               </div>
               <button
@@ -156,12 +168,6 @@ function UploadZone({ label, image, fileName, onFile, onRemove, bgRemoved, bgRem
               <span className="text-xs text-text-secondary group-hover:text-text-primary transition-colors">
                 {bgRemoving ? "Removing background…" : "Remove background"}
               </span>
-              {bgRemoving && (
-                <svg className="animate-spin h-3.5 w-3.5 text-accent/70" viewBox="0 0 24 24" fill="none">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                </svg>
-              )}
             </label>
           </motion.div>
         )}
@@ -207,6 +213,8 @@ function processFile(
 // ── Background removal helper ────────────────────────────────────
 
 async function removeBg(dataUrl: string): Promise<string> {
+  // Yield to browser so UI can render before heavy computation starts
+  await new Promise((r) => setTimeout(r, 50))
   const blob = await removeBackground(dataUrl, {
     model: "isnet_fp16",
     output: { format: "image/png", quality: 0.9 },
@@ -223,20 +231,66 @@ export default function DesignUploader() {
   const frontOriginal = useRef<string | null>(null)
   const backOriginal = useRef<string | null>(null)
 
-  // BG removal state per side
-  const [frontBgRemoved, setFrontBgRemoved] = useState(false)
-  const [frontBgRemoving, setFrontBgRemoving] = useState(false)
-  const [backBgRemoved, setBackBgRemoved] = useState(false)
-  const [backBgRemoving, setBackBgRemoving] = useState(false)
-
   // Cache processed images so re-toggling is instant
   const frontProcessed = useRef<string | null>(null)
   const backProcessed = useRef<string | null>(null)
 
+  // BG removal state per side
+  const [frontBgRemoved, setFrontBgRemoved] = useState(false)
+  const [frontBgRemoving, setFrontBgRemoving] = useState(false)
+  const [frontBgReady, setFrontBgReady] = useState(false)
+  const [backBgRemoved, setBackBgRemoved] = useState(false)
+  const [backBgRemoving, setBackBgRemoving] = useState(false)
+  const [backBgReady, setBackBgReady] = useState(false)
+
+  // Track upload generation to discard stale results
+  const frontGen = useRef(0)
+  const backGen = useRef(0)
+
+  // ── Auto-process front image on upload ──────────────────────────
+  const frontImage = snap.frontDesignImage
+  useEffect(() => {
+    if (!frontImage || frontProcessed.current || frontBgRemoving) return
+    // Only auto-process if this is a fresh upload (original matches current)
+    if (frontOriginal.current !== frontImage) return
+
+    const gen = frontGen.current
+    setFrontBgRemoving(true)
+    removeBg(frontImage).then((result) => {
+      if (gen !== frontGen.current) return // stale
+      frontProcessed.current = result
+      setFrontBgReady(true)
+      setFrontBgRemoving(false)
+    }).catch(() => {
+      if (gen !== frontGen.current) return
+      setFrontBgRemoving(false)
+    })
+  }, [frontImage]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── Auto-process back image on upload ───────────────────────────
+  const backImage = snap.backDesignImage
+  useEffect(() => {
+    if (!backImage || backProcessed.current || backBgRemoving) return
+    if (backOriginal.current !== backImage) return
+
+    const gen = backGen.current
+    setBackBgRemoving(true)
+    removeBg(backImage).then((result) => {
+      if (gen !== backGen.current) return
+      backProcessed.current = result
+      setBackBgReady(true)
+      setBackBgRemoving(false)
+    }).catch(() => {
+      if (gen !== backGen.current) return
+      setBackBgRemoving(false)
+    })
+  }, [backImage]) // eslint-disable-line react-hooks/exhaustive-deps
+
   const handleFrontFile = useCallback((file: File) => {
-    // Reset bg removal state on new upload
+    frontGen.current++
     setFrontBgRemoved(false)
     setFrontBgRemoving(false)
+    setFrontBgReady(false)
     frontOriginal.current = null
     frontProcessed.current = null
 
@@ -256,8 +310,10 @@ export default function DesignUploader() {
   }, [])
 
   const handleBackFile = useCallback((file: File) => {
+    backGen.current++
     setBackBgRemoved(false)
     setBackBgRemoving(false)
+    setBackBgReady(false)
     backOriginal.current = null
     backProcessed.current = null
 
@@ -277,79 +333,47 @@ export default function DesignUploader() {
   }, [])
 
   const removeFront = () => {
+    frontGen.current++
     state.frontDesignImage = null
     state.frontDesignFileName = ""
     setFrontBgRemoved(false)
     setFrontBgRemoving(false)
+    setFrontBgReady(false)
     frontOriginal.current = null
     frontProcessed.current = null
   }
 
   const removeBack = () => {
+    backGen.current++
     state.backDesignImage = null
     state.backDesignFileName = ""
     setBackBgRemoved(false)
     setBackBgRemoving(false)
+    setBackBgReady(false)
     backOriginal.current = null
     backProcessed.current = null
   }
 
-  const toggleFrontBgRemoval = useCallback(async () => {
+  // Toggle is now just an instant swap between cached images
+  const toggleFrontBgRemoval = useCallback(() => {
     if (frontBgRemoving) return
     if (frontBgRemoved) {
-      // Restore original
       if (frontOriginal.current) state.frontDesignImage = frontOriginal.current
       setFrontBgRemoved(false)
-      return
-    }
-    // If we already processed it, use cached version
-    if (frontProcessed.current) {
+    } else if (frontProcessed.current) {
       state.frontDesignImage = frontProcessed.current
       setFrontBgRemoved(true)
-      return
-    }
-    // Process
-    const original = frontOriginal.current ?? state.frontDesignImage
-    if (!original) return
-    frontOriginal.current = original
-    setFrontBgRemoving(true)
-    try {
-      const result = await removeBg(original)
-      frontProcessed.current = result
-      state.frontDesignImage = result
-      setFrontBgRemoved(true)
-    } catch (err) {
-      console.error("Background removal failed:", err)
-    } finally {
-      setFrontBgRemoving(false)
     }
   }, [frontBgRemoved, frontBgRemoving])
 
-  const toggleBackBgRemoval = useCallback(async () => {
+  const toggleBackBgRemoval = useCallback(() => {
     if (backBgRemoving) return
     if (backBgRemoved) {
       if (backOriginal.current) state.backDesignImage = backOriginal.current
       setBackBgRemoved(false)
-      return
-    }
-    if (backProcessed.current) {
+    } else if (backProcessed.current) {
       state.backDesignImage = backProcessed.current
       setBackBgRemoved(true)
-      return
-    }
-    const original = backOriginal.current ?? state.backDesignImage
-    if (!original) return
-    backOriginal.current = original
-    setBackBgRemoving(true)
-    try {
-      const result = await removeBg(original)
-      backProcessed.current = result
-      state.backDesignImage = result
-      setBackBgRemoved(true)
-    } catch (err) {
-      console.error("Background removal failed:", err)
-    } finally {
-      setBackBgRemoving(false)
     }
   }, [backBgRemoved, backBgRemoving])
 
@@ -401,6 +425,7 @@ export default function DesignUploader() {
         onRemove={removeFront}
         bgRemoved={frontBgRemoved}
         bgRemoving={frontBgRemoving}
+        bgReady={frontBgReady}
         onToggleBgRemoval={toggleFrontBgRemoval}
       />
 
@@ -422,6 +447,7 @@ export default function DesignUploader() {
               onRemove={removeBack}
               bgRemoved={backBgRemoved}
               bgRemoving={backBgRemoving}
+              bgReady={backBgReady}
               onToggleBgRemoval={toggleBackBgRemoval}
             />
           </motion.div>
