@@ -41,12 +41,12 @@ export default function App() {
       {/* Main two-panel layout */}
       <div className="flex flex-1 min-h-0 flex-col lg:flex-row">
         {/* Left: 3D T-shirt viewer */}
-        <div className="flex-1 lg:flex-[1.2] min-h-[400px] lg:min-h-0 border-b lg:border-b-0 lg:border-r border-border-subtle">
+        <div className="w-full lg:w-[55%] lg:max-w-[720px] h-[360px] sm:h-[420px] lg:h-auto lg:min-h-0 shrink-0 border-b lg:border-b-0 lg:border-r border-border-subtle">
           <TShirtViewer />
         </div>
 
         {/* Right: Configuration panel */}
-        <div className="flex-1 lg:max-w-[480px] overflow-y-auto bg-surface-0 p-6">
+        <div className="flex-1 min-w-0 overflow-y-auto bg-surface-0 p-5 lg:p-6">
           <Section title="T-Shirt Color" number="01">
             <ColorPicker />
           </Section>

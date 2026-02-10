@@ -14,7 +14,7 @@ export default function TShirtViewer() {
         : null
 
   return (
-    <div className="relative w-full h-full min-h-[480px] bg-surface-1 overflow-hidden">
+    <div className="relative w-full h-full bg-surface-1 overflow-hidden">
       {/* 3D Scene */}
       <Suspense
         fallback={
