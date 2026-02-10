@@ -209,7 +209,7 @@ function processFile(
 async function removeBg(dataUrl: string): Promise<string> {
   const blob = await removeBackground(dataUrl, {
     model: "isnet_fp16",
-    output: { format: "image/png", quality: 0.9, type: "foreground" },
+    output: { format: "image/png", quality: 0.9 },
   })
   return URL.createObjectURL(blob)
 }
