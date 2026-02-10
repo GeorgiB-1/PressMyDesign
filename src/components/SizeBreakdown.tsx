@@ -22,10 +22,17 @@ export default function SizeBreakdown() {
     state.sizes[size] = Math.max(0, parseInt(value) || 0)
   }
 
+  const allocated = SIZES.map((size, i) => ({
+    size,
+    qty: snap.sizes[size],
+    color: SIZE_COLORS[i],
+    pct: (snap.sizes[size] / TOTAL_QTY) * 100,
+  })).filter((s) => s.qty > 0)
+
   return (
     <div>
       {/* Status bar */}
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-2">
         <span className="text-xs text-text-secondary">
           Distribute{" "}
           <strong className="text-text-primary">{TOTAL_QTY}</strong> shirts
@@ -47,15 +54,12 @@ export default function SizeBreakdown() {
         </span>
       </div>
 
-      {/* Size grid */}
-      <div className="grid grid-cols-3 gap-2">
+      {/* Size input row — compact inline */}
+      <div className="grid grid-cols-6 gap-1.5">
         {SIZES.map((size, i) => (
-          <div
-            key={size}
-            className="bg-surface-1 border border-border rounded-xl p-3 text-center"
-          >
+          <div key={size} className="text-center">
             <div
-              className="text-[10px] font-bold tracking-widest mb-1.5"
+              className="text-[10px] font-bold tracking-wide mb-1"
               style={{ color: SIZE_COLORS[i] }}
             >
               {size}
@@ -66,45 +70,56 @@ export default function SizeBreakdown() {
               max={TOTAL_QTY}
               value={snap.sizes[size]}
               onChange={(e) => handleChange(size, e.target.value)}
-              className="w-full bg-surface-0 border border-border rounded-lg text-text-primary text-base font-bold text-center py-2 px-1 outline-none focus:border-accent/50 transition-colors"
+              className="w-full bg-surface-1 border border-border rounded-lg text-text-primary text-sm font-bold text-center py-1.5 px-0.5 outline-none focus:border-accent/50 transition-colors"
             />
           </div>
         ))}
       </div>
 
-      {/* Visual distribution bar */}
-      <div className="mt-3 h-1.5 bg-surface-2 rounded-full overflow-hidden flex">
-        {SIZES.map((size, i) => {
-          const pct = (snap.sizes[size] / TOTAL_QTY) * 100
-          return pct > 0 ? (
+      {/* Distribution bar — tall with labels */}
+      {allocated.length > 0 && (
+        <div className="mt-2.5 h-8 bg-surface-2 rounded-lg overflow-hidden flex">
+          {allocated.map((s) => (
             <div
-              key={size}
+              key={s.size}
+              className="flex items-center justify-center overflow-hidden"
               style={{
-                width: `${pct}%`,
-                backgroundColor: SIZE_COLORS[i],
+                width: `${s.pct}%`,
+                backgroundColor: s.color,
                 transition: "width 0.3s ease",
+                minWidth: s.pct > 0 ? "2px" : 0,
               }}
-            />
-          ) : null
-        })}
-      </div>
-
-      {/* Size legend */}
-      <div className="flex flex-wrap gap-x-3 gap-y-1 mt-2">
-        {SIZES.map((size, i) =>
-          snap.sizes[size] > 0 ? (
-            <div key={size} className="flex items-center gap-1.5">
-              <div
-                className="w-1.5 h-1.5 rounded-full"
-                style={{ backgroundColor: SIZE_COLORS[i] }}
-              />
-              <span className="text-[10px] text-text-muted">
-                {size}: {snap.sizes[size]}
-              </span>
+            >
+              {s.pct >= 12 && (
+                <span className="text-[11px] font-bold text-white drop-shadow-sm whitespace-nowrap px-1">
+                  {s.qty}× {s.size}
+                </span>
+              )}
             </div>
-          ) : null,
-        )}
-      </div>
+          ))}
+        </div>
+      )}
+
+      {/* Chip summary below bar for smaller segments */}
+      {allocated.length > 0 && (
+        <div className="flex flex-wrap gap-1.5 mt-2">
+          {allocated.map((s) => (
+            <div
+              key={s.size}
+              className="flex items-center gap-1.5 px-2 py-0.5 rounded-md text-xs font-semibold"
+              style={{
+                backgroundColor: s.color + "1a",
+                color: s.color,
+                border: `1px solid ${s.color}33`,
+              }}
+            >
+              <span>{s.size}</span>
+              <span className="opacity-70">×</span>
+              <span>{s.qty}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

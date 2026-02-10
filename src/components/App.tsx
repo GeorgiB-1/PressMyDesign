@@ -18,7 +18,7 @@ export default function App() {
   return (
     <div className="min-h-screen flex flex-col bg-surface-0">
       {/* Header */}
-      <header className="shrink-0 px-6 py-4 border-b border-border-subtle flex items-center justify-between">
+      <header className="shrink-0 px-6 py-3 border-b border-border-subtle flex items-center justify-between">
         <div>
           <h1 className="text-lg font-bold tracking-tight text-text-primary">
             100 Gildan SoftStyle&reg; T-Shirts
@@ -46,7 +46,7 @@ export default function App() {
         </div>
 
         {/* Right: Configuration panel */}
-        <div className="flex-1 min-w-0 overflow-y-auto bg-surface-0 p-5 lg:p-6">
+        <div className="flex-1 min-w-0 overflow-y-auto bg-surface-0 p-5 lg:px-6 lg:py-4">
           <Section title="T-Shirt Color" number="01">
             <ColorPicker />
           </Section>

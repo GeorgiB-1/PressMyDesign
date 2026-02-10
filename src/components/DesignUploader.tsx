@@ -56,7 +56,7 @@ function UploadZone({ label, image, fileName, onFile, onRemove }: UploadZoneProp
             }}
             onDragLeave={() => setIsDragOver(false)}
             onDrop={handleDrop}
-            className={`flex flex-col items-center justify-center rounded-xl py-5 px-4 cursor-pointer transition-all duration-200 border-2 border-dashed ${
+            className={`flex flex-col items-center justify-center rounded-xl py-3.5 px-4 cursor-pointer transition-all duration-200 border-2 border-dashed ${
               isDragOver
                 ? "border-accent/60 bg-accent/5"
                 : "border-border hover:border-surface-3 bg-surface-1 hover:bg-surface-2"

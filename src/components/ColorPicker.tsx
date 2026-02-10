@@ -14,7 +14,7 @@ export default function ColorPicker() {
   }
 
   return (
-    <div className="flex flex-wrap gap-1.5">
+    <div className="flex flex-wrap gap-1">
       {TSHIRT_COLORS.map((c) => {
         const isSelected = snap.colorSlug === c.slug
         const isLight = isLightColor(c.hex)
@@ -26,7 +26,7 @@ export default function ColorPicker() {
             onClick={() => handleSelect(c)}
             whileHover={{ scale: 1.15 }}
             whileTap={{ scale: 0.95 }}
-            className="relative w-8 h-8 rounded-full cursor-pointer transition-shadow duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="relative w-7 h-7 rounded-full cursor-pointer transition-shadow duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             style={{
               backgroundColor: c.hex,
               border: isSelected

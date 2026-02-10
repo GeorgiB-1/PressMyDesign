@@ -19,18 +19,18 @@ export default function PrintOptions() {
   const surchargeTotal = BACK_PRINT_SURCHARGE_PER_SHIRT * TOTAL_QTY
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-2">
       {/* Front print */}
       <div>
-        <label className="block text-[11px] font-semibold text-text-muted tracking-wide mb-1.5">
+        <label className="block text-[11px] font-semibold text-text-muted tracking-wide mb-1">
           Front Print
         </label>
-        <div className="flex gap-2">
+        <div className="flex gap-1.5">
           {FRONT_OPTIONS.map((opt) => (
             <button
               key={opt.value}
               onClick={() => (state.frontPrint = opt.value)}
-              className={`flex-1 px-3 py-2.5 rounded-lg text-xs font-medium transition-all duration-150 border cursor-pointer ${
+              className={`flex-1 px-2 py-2 rounded-lg text-xs font-medium transition-all duration-150 border cursor-pointer ${
                 snap.frontPrint === opt.value
                   ? "bg-accent/15 border-accent/50 text-text-primary"
                   : "bg-surface-2 border-border text-text-secondary hover:border-surface-3 hover:text-text-primary"
@@ -44,10 +44,10 @@ export default function PrintOptions() {
 
       {/* Back print */}
       <div>
-        <label className="block text-[11px] font-semibold text-text-muted tracking-wide mb-1.5">
+        <label className="block text-[11px] font-semibold text-text-muted tracking-wide mb-1">
           Back Print
         </label>
-        <div className="flex gap-2">
+        <div className="flex gap-1.5">
           {BACK_OPTIONS.map((opt) => (
             <button
               key={opt.value}
@@ -55,7 +55,7 @@ export default function PrintOptions() {
                 state.backPrint = opt.value
                 state.useSameDesign = false
               }}
-              className={`flex-1 px-3 py-2.5 rounded-lg text-xs font-medium transition-all duration-150 border cursor-pointer ${
+              className={`flex-1 px-2 py-2 rounded-lg text-xs font-medium transition-all duration-150 border cursor-pointer ${
                 snap.backPrint === opt.value
                   ? "bg-accent/15 border-accent/50 text-text-primary"
                   : "bg-surface-2 border-border text-text-secondary hover:border-surface-3 hover:text-text-primary"

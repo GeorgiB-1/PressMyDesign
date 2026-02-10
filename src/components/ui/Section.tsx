@@ -8,8 +8,8 @@ interface SectionProps {
 
 export default function Section({ title, number, children }: SectionProps) {
   return (
-    <div className="mb-6">
-      <div className="flex items-center gap-2.5 mb-3">
+    <div className="mb-4">
+      <div className="flex items-center gap-2.5 mb-2">
         <span className="text-[10px] font-extrabold tracking-widest text-text-muted">
           {number}
         </span>
