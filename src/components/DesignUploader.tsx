@@ -256,14 +256,17 @@ export default function DesignUploader() {
 
     const gen = frontGen.current
     setFrontBgRemoving(true)
+    state.bgProcessing = true
     removeBg(frontImage).then((result) => {
       if (gen !== frontGen.current) return // stale
       frontProcessed.current = result
       setFrontBgReady(true)
       setFrontBgRemoving(false)
+      state.bgProcessing = false
     }).catch(() => {
       if (gen !== frontGen.current) return
       setFrontBgRemoving(false)
+      state.bgProcessing = false
     })
   }, [frontImage]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -275,14 +278,17 @@ export default function DesignUploader() {
 
     const gen = backGen.current
     setBackBgRemoving(true)
+    state.bgProcessing = true
     removeBg(backImage).then((result) => {
       if (gen !== backGen.current) return
       backProcessed.current = result
       setBackBgReady(true)
       setBackBgRemoving(false)
+      state.bgProcessing = false
     }).catch(() => {
       if (gen !== backGen.current) return
       setBackBgRemoving(false)
+      state.bgProcessing = false
     })
   }, [backImage]) // eslint-disable-line react-hooks/exhaustive-deps
 

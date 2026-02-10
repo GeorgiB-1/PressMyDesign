@@ -19,6 +19,9 @@ const state = proxy({
   backDesignFileName: "",
   useSameDesign: false, // when true, back uses the front design
 
+  // Background removal processing state (drives global overlay)
+  bgProcessing: false,
+
   // Size breakdown
   sizes: {
     S: 0,

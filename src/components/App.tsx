@@ -1,4 +1,5 @@
 import { useSnapshot } from "valtio"
+import { AnimatePresence, motion } from "framer-motion"
 import { SIZES, TOTAL_QTY } from "../data/tshirtCatalog"
 import state from "../store"
 import TShirtViewer from "./TShirtViewer"
@@ -17,6 +18,34 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-surface-0">
+      {/* Background removal processing overlay */}
+      <AnimatePresence>
+        {snap.bgProcessing && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/30 backdrop-blur-sm"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.2 }}
+              className="flex flex-col items-center gap-3 bg-surface-1/95 border border-border rounded-2xl px-8 py-6 shadow-xl"
+            >
+              <svg className="animate-spin h-8 w-8 text-accent" viewBox="0 0 24 24" fill="none">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+              </svg>
+              <span className="text-sm font-semibold text-text-primary">Removing background…</span>
+              <span className="text-xs text-text-muted">This may take a few seconds</span>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Header */}
       <header className="shrink-0 px-6 py-3 border-b border-border-subtle flex items-center justify-between">
         <div>
