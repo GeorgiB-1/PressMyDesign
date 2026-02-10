@@ -1,6 +1,7 @@
-import { useState, useCallback } from "react"
+import { useState, useCallback, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useSnapshot } from "valtio"
+import { removeBackground } from "@imgly/background-removal"
 import state from "../store"
 
 // ── Single upload zone (reused for front & back) ──────────────────
@@ -11,9 +12,12 @@ interface UploadZoneProps {
   fileName: string
   onFile: (file: File) => void
   onRemove: () => void
+  bgRemoved: boolean
+  bgRemoving: boolean
+  onToggleBgRemoval: () => void
 }
 
-function UploadZone({ label, image, fileName, onFile, onRemove }: UploadZoneProps) {
+function UploadZone({ label, image, fileName, onFile, onRemove, bgRemoved, bgRemoving, onToggleBgRemoval }: UploadZoneProps) {
   const [isDragOver, setIsDragOver] = useState(false)
 
   const openFilePicker = useCallback(() => {
@@ -90,36 +94,75 @@ function UploadZone({ label, image, fileName, onFile, onRemove }: UploadZoneProp
             initial={{ opacity: 0, y: 4 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
-            className="flex items-center gap-3 bg-surface-1 border border-border rounded-xl p-3"
+            className="flex flex-col gap-2"
           >
-            <img
-              src={image}
-              alt="Design preview"
-              className="w-12 h-12 object-contain rounded-lg bg-surface-2"
-            />
-            <div className="flex-1 min-w-0">
-              <div className="text-sm font-semibold text-text-secondary truncate">
-                {fileName}
+            <div className="flex items-center gap-3 bg-surface-1 border border-border rounded-xl p-3">
+              <img
+                src={image}
+                alt="Design preview"
+                className="w-12 h-12 object-contain rounded-lg bg-surface-2"
+              />
+              <div className="flex-1 min-w-0">
+                <div className="text-sm font-semibold text-text-secondary truncate">
+                  {fileName}
+                </div>
+                <div className="text-[11px] text-text-muted mt-0.5">
+                  {bgRemoving ? "Removing background…" : "Ready"}
+                </div>
               </div>
-              <div className="text-[11px] text-text-muted mt-0.5">Ready</div>
-            </div>
-            <button
-              onClick={onRemove}
-              className="shrink-0 w-8 h-8 flex items-center justify-center rounded-lg bg-surface-2 border border-border text-text-muted hover:text-danger hover:border-danger/30 transition-colors cursor-pointer"
-            >
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
+              <button
+                onClick={onRemove}
+                className="shrink-0 w-8 h-8 flex items-center justify-center rounded-lg bg-surface-2 border border-border text-text-muted hover:text-danger hover:border-danger/30 transition-colors cursor-pointer"
               >
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            </button>
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Remove background toggle */}
+            <label className="flex items-center gap-2.5 cursor-pointer select-none group pl-1">
+              <button
+                type="button"
+                role="switch"
+                aria-checked={bgRemoved}
+                disabled={bgRemoving}
+                onClick={onToggleBgRemoval}
+                className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border transition-colors duration-200 ${
+                  bgRemoving
+                    ? "opacity-60 cursor-wait"
+                    : "cursor-pointer"
+                } ${
+                  bgRemoved
+                    ? "bg-accent/80 border-accent/50"
+                    : "bg-surface-2 border-border"
+                }`}
+              >
+                <span
+                  className={`inline-block h-3.5 w-3.5 rounded-full bg-white shadow-sm transition-transform duration-200 ${
+                    bgRemoved ? "translate-x-[18px]" : "translate-x-[3px]"
+                  }`}
+                />
+              </button>
+              <span className="text-xs text-text-secondary group-hover:text-text-primary transition-colors">
+                {bgRemoving ? "Removing background…" : "Remove background"}
+              </span>
+              {bgRemoving && (
+                <svg className="animate-spin h-3.5 w-3.5 text-accent/70" viewBox="0 0 24 24" fill="none">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                </svg>
+              )}
+            </label>
           </motion.div>
         )}
       </AnimatePresence>
@@ -161,17 +204,47 @@ function processFile(
   reader.readAsDataURL(file)
 }
 
+// ── Background removal helper ────────────────────────────────────
+
+async function removeBg(dataUrl: string): Promise<string> {
+  const blob = await removeBackground(dataUrl, {
+    model: "isnet_fp16",
+    output: { format: "image/png", quality: 0.9, type: "foreground" },
+  })
+  return URL.createObjectURL(blob)
+}
+
 // ── Main component ────────────────────────────────────────────────
 
 export default function DesignUploader() {
   const snap = useSnapshot(state)
 
+  // Original images (before bg removal) so we can toggle back
+  const frontOriginal = useRef<string | null>(null)
+  const backOriginal = useRef<string | null>(null)
+
+  // BG removal state per side
+  const [frontBgRemoved, setFrontBgRemoved] = useState(false)
+  const [frontBgRemoving, setFrontBgRemoving] = useState(false)
+  const [backBgRemoved, setBackBgRemoved] = useState(false)
+  const [backBgRemoving, setBackBgRemoving] = useState(false)
+
+  // Cache processed images so re-toggling is instant
+  const frontProcessed = useRef<string | null>(null)
+  const backProcessed = useRef<string | null>(null)
+
   const handleFrontFile = useCallback((file: File) => {
+    // Reset bg removal state on new upload
+    setFrontBgRemoved(false)
+    setFrontBgRemoving(false)
+    frontOriginal.current = null
+    frontProcessed.current = null
+
     processFile(
       file,
       (data) => {
         state.frontDesignImage = data
-        // Auto-select left-chest if no front print location set
+        frontOriginal.current = data
         if (state.frontPrint === "none") {
           state.frontPrint = "left-chest"
         }
@@ -183,11 +256,16 @@ export default function DesignUploader() {
   }, [])
 
   const handleBackFile = useCallback((file: File) => {
+    setBackBgRemoved(false)
+    setBackBgRemoving(false)
+    backOriginal.current = null
+    backProcessed.current = null
+
     processFile(
       file,
       (data) => {
         state.backDesignImage = data
-        // Auto-select full-back if no back print location set
+        backOriginal.current = data
         if (state.backPrint === "none") {
           state.backPrint = "full-back"
         }
@@ -201,12 +279,79 @@ export default function DesignUploader() {
   const removeFront = () => {
     state.frontDesignImage = null
     state.frontDesignFileName = ""
+    setFrontBgRemoved(false)
+    setFrontBgRemoving(false)
+    frontOriginal.current = null
+    frontProcessed.current = null
   }
 
   const removeBack = () => {
     state.backDesignImage = null
     state.backDesignFileName = ""
+    setBackBgRemoved(false)
+    setBackBgRemoving(false)
+    backOriginal.current = null
+    backProcessed.current = null
   }
+
+  const toggleFrontBgRemoval = useCallback(async () => {
+    if (frontBgRemoving) return
+    if (frontBgRemoved) {
+      // Restore original
+      if (frontOriginal.current) state.frontDesignImage = frontOriginal.current
+      setFrontBgRemoved(false)
+      return
+    }
+    // If we already processed it, use cached version
+    if (frontProcessed.current) {
+      state.frontDesignImage = frontProcessed.current
+      setFrontBgRemoved(true)
+      return
+    }
+    // Process
+    const original = frontOriginal.current ?? state.frontDesignImage
+    if (!original) return
+    frontOriginal.current = original
+    setFrontBgRemoving(true)
+    try {
+      const result = await removeBg(original)
+      frontProcessed.current = result
+      state.frontDesignImage = result
+      setFrontBgRemoved(true)
+    } catch (err) {
+      console.error("Background removal failed:", err)
+    } finally {
+      setFrontBgRemoving(false)
+    }
+  }, [frontBgRemoved, frontBgRemoving])
+
+  const toggleBackBgRemoval = useCallback(async () => {
+    if (backBgRemoving) return
+    if (backBgRemoved) {
+      if (backOriginal.current) state.backDesignImage = backOriginal.current
+      setBackBgRemoved(false)
+      return
+    }
+    if (backProcessed.current) {
+      state.backDesignImage = backProcessed.current
+      setBackBgRemoved(true)
+      return
+    }
+    const original = backOriginal.current ?? state.backDesignImage
+    if (!original) return
+    backOriginal.current = original
+    setBackBgRemoving(true)
+    try {
+      const result = await removeBg(original)
+      backProcessed.current = result
+      state.backDesignImage = result
+      setBackBgRemoved(true)
+    } catch (err) {
+      console.error("Background removal failed:", err)
+    } finally {
+      setBackBgRemoving(false)
+    }
+  }, [backBgRemoved, backBgRemoving])
 
   const hasBackPrint = snap.backPrint === "full-back"
   const showBackUploader = hasBackPrint && !snap.useSameDesign
@@ -254,6 +399,9 @@ export default function DesignUploader() {
         fileName={snap.frontDesignFileName}
         onFile={handleFrontFile}
         onRemove={removeFront}
+        bgRemoved={frontBgRemoved}
+        bgRemoving={frontBgRemoving}
+        onToggleBgRemoval={toggleFrontBgRemoval}
       />
 
       {/* Back design uploader (only when back print selected + toggle off) */}
@@ -272,6 +420,9 @@ export default function DesignUploader() {
               fileName={snap.backDesignFileName}
               onFile={handleBackFile}
               onRemove={removeBack}
+              bgRemoved={backBgRemoved}
+              bgRemoving={backBgRemoving}
+              onToggleBgRemoval={toggleBackBgRemoval}
             />
           </motion.div>
         )}
