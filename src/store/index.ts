@@ -21,6 +21,7 @@ const state = proxy({
 
   // Background removal processing state (drives global overlay)
   bgProcessing: false,
+  bgProgress: 0,
 
   // Size breakdown
   sizes: {
