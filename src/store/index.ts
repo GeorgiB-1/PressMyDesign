@@ -1,6 +1,9 @@
 import { proxy } from "valtio"
 import { TSHIRT_COLORS } from "../data/tshirtCatalog"
-import type { PrintLocation, Size } from "../data/tshirtCatalog"
+import type { PrintLocation } from "../data/tshirtCatalog"
+
+// Read email from URL params on load
+const params = new URLSearchParams(window.location.search)
 
 const state = proxy({
   // T-shirt color (hex)
@@ -23,15 +26,14 @@ const state = proxy({
   bgProcessing: false,
   bgProgress: 0,
 
-  // Size breakdown
-  sizes: {
-    S: 0,
-    M: 0,
-    L: 25,
-    XL: 50,
-    "2XL": 25,
-    "3XL": 0,
-  } as Record<Size, number>,
+  // Quote form fields
+  email: params.get("email") || "",
+  quoteName: "",
+  quoteNotes: "",
+
+  // Quote submission state
+  quoteSubmitted: false,
+  quoteError: "",
 })
 
 export default state

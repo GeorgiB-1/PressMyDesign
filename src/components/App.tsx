@@ -1,20 +1,15 @@
 import { useSnapshot } from "valtio"
 import { AnimatePresence, motion } from "framer-motion"
-import { SIZES, TOTAL_QTY } from "../data/tshirtCatalog"
 import state from "../store"
 import TShirtViewer from "./TShirtViewer"
 import ColorPicker from "./ColorPicker"
 import PrintOptions from "./PrintOptions"
 import DesignUploader from "./DesignUploader"
-import SizeBreakdown from "./SizeBreakdown"
-import PriceSummary from "./PriceSummary"
+import RequestQuote from "./RequestQuote"
 import Section from "./ui/Section"
 
 export default function App() {
   const snap = useSnapshot(state)
-
-  const totalAllocated = SIZES.reduce((acc, s) => acc + snap.sizes[s], 0)
-  const remaining = TOTAL_QTY - totalAllocated
 
   return (
     <div className="min-h-screen flex flex-col bg-surface-0">
@@ -48,26 +43,22 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Header */}
-      <header className="shrink-0 px-6 py-3 border-b border-border-subtle flex items-center justify-between">
-        <div>
-          <h1 className="text-lg font-bold tracking-tight text-text-primary">
-            100 Gildan SoftStyle&reg; T-Shirts
-          </h1>
-          <p className="text-xs text-text-muted mt-0.5">
-            Package Deal &middot; Custom Print Configurator
-          </p>
-        </div>
-        <div className="text-right">
-          <div className="text-2xl font-extrabold text-text-primary tracking-tight">
-            ${(
-              399 +
-              (snap.backPrint !== "none" ? 2.5 * TOTAL_QTY : 0)
-            ).toFixed(2)}
-          </div>
-          <div className="text-[10px] text-text-muted">incl. printing</div>
-        </div>
-      </header>
+      {/* Hero banner */}
+      <motion.header
+        initial={{ opacity: 0, y: -12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="shrink-0 px-6 py-5 bg-gradient-to-r from-accent/15 via-accent/5 to-transparent border-b border-accent/10"
+      >
+        <h1 className="text-lg sm:text-xl font-extrabold tracking-tight text-text-primary">
+          Your AI mockup is being generated!
+        </h1>
+        <p className="text-xs sm:text-sm text-text-secondary mt-1.5 max-w-xl leading-relaxed">
+          Check your inbox shortly to see your design on a real model. While you
+          wait — upload your design below to see it in 3D, try different shirt
+          colours, and get instant pricing for your order.
+        </p>
+      </motion.header>
 
       {/* Main two-panel layout */}
       <div className="flex flex-1 min-h-0 flex-col lg:flex-row">
@@ -78,7 +69,7 @@ export default function App() {
 
         {/* Right: Configuration panel */}
         <div className="flex-1 min-w-0 overflow-y-auto bg-surface-0 p-5 lg:px-6 lg:py-4">
-          <Section title="T-Shirt Color" number="01">
+          <Section title="T-Shirt Colour" number="01">
             <ColorPicker />
           </Section>
 
@@ -90,11 +81,9 @@ export default function App() {
             <DesignUploader />
           </Section>
 
-          <Section title="Size Breakdown" number="04">
-            <SizeBreakdown />
+          <Section title="Get a Quote" number="04">
+            <RequestQuote />
           </Section>
-
-          <PriceSummary remaining={remaining} />
         </div>
       </div>
     </div>
