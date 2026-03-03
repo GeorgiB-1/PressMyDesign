@@ -30,10 +30,10 @@ export default function PrintOptions() {
             <button
               key={opt.value}
               onClick={() => (state.frontPrint = opt.value)}
-              className={`flex-1 px-2 py-2 rounded-lg text-xs font-medium transition-all duration-150 border cursor-pointer ${
+              className={`flex-1 px-2.5 py-3 rounded-[10px] text-[13px] font-semibold transition-all duration-150 border-[1.5px] cursor-pointer text-center ${
                 snap.frontPrint === opt.value
-                  ? "bg-accent/15 border-accent/50 text-text-primary"
-                  : "bg-surface-2 border-border text-text-secondary hover:border-surface-3 hover:text-text-primary"
+                  ? "bg-accent-purple/10 border-accent-purple text-text-primary"
+                  : "bg-white/[0.03] border-white/[0.06] text-text-secondary/50 hover:text-text-primary"
               }`}
             >
               {opt.label}
@@ -55,15 +55,18 @@ export default function PrintOptions() {
                 state.backPrint = opt.value
                 state.useSameDesign = false
               }}
-              className={`flex-1 px-2 py-2 rounded-lg text-xs font-medium transition-all duration-150 border cursor-pointer ${
+              className={`flex-1 px-2.5 py-3 rounded-[10px] text-[13px] font-semibold transition-all duration-150 border-[1.5px] cursor-pointer text-center ${
                 snap.backPrint === opt.value
-                  ? "bg-accent/15 border-accent/50 text-text-primary"
-                  : "bg-surface-2 border-border text-text-secondary hover:border-surface-3 hover:text-text-primary"
+                  ? "bg-accent-purple/10 border-accent-purple text-text-primary"
+                  : "bg-white/[0.03] border-white/[0.06] text-text-secondary/50 hover:text-text-primary"
               }`}
             >
-              {opt.value === "full-back"
-                ? `${opt.label} (+$${BACK_PRINT_SURCHARGE_PER_SHIRT.toFixed(2)}/ea)`
-                : opt.label}
+              <span>{opt.label}</span>
+              {opt.value === "full-back" && (
+                <span className="block text-[11px] font-normal text-text-secondary/35 mt-0.5">
+                  +${BACK_PRINT_SURCHARGE_PER_SHIRT.toFixed(2)}/ea
+                </span>
+              )}
             </button>
           ))}
         </div>

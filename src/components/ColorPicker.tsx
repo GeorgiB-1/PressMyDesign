@@ -14,7 +14,7 @@ export default function ColorPicker() {
   }
 
   return (
-    <div className="flex flex-wrap gap-1">
+    <div className="flex flex-wrap gap-[7px]">
       {TSHIRT_COLORS.map((c) => {
         const isSelected = snap.colorSlug === c.slug
         const isLight = isLightColor(c.hex)
@@ -26,25 +26,28 @@ export default function ColorPicker() {
             onClick={() => handleSelect(c)}
             whileHover={{ scale: 1.15 }}
             whileTap={{ scale: 0.95 }}
-            className="relative w-7 h-7 rounded-full cursor-pointer transition-shadow duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="relative w-9 h-9 rounded-full cursor-pointer transition-shadow duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             style={{
               backgroundColor: c.hex,
               border: isSelected
-                ? "2.5px solid #fff"
+                ? "3px solid #ff3d00"
                 : isLight
-                  ? "1.5px solid rgba(255,255,255,0.15)"
-                  : "1.5px solid transparent",
+                  ? "3px solid rgba(255,255,255,0.15)"
+                  : "3px solid transparent",
               boxShadow: isSelected
-                ? `0 0 0 2px #09090b, 0 0 16px ${c.hex}66`
+                ? "0 0 0 3px rgba(255,61,0,0.15)"
                 : "none",
             }}
           >
             {isSelected && (
-              <motion.div
-                layoutId="color-indicator"
-                className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-white"
-                transition={{ type: "spring", stiffness: 400, damping: 25 }}
-              />
+              <span className="absolute inset-0 flex items-center justify-center text-[11px] font-extrabold"
+                style={{
+                  color: isLight ? "#ff3d00" : "#fff",
+                  textShadow: !isLight ? "0 1px 2px rgba(0,0,0,0.6)" : "none",
+                }}
+              >
+                &#10003;
+              </span>
             )}
           </motion.button>
         )

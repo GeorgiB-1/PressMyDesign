@@ -72,7 +72,7 @@ export default function RequestQuote() {
         <div className="border-t border-border pt-2 mt-2 flex justify-between items-baseline">
           <span className="text-sm font-bold text-text-primary">Total</span>
           <div className="text-right">
-            <span className="text-xl font-extrabold text-text-primary tracking-tight">
+            <span className="text-2xl font-extrabold text-accent-orange tracking-tight">
               ${total.toFixed(2)}
             </span>
             <div className="text-[10px] text-text-muted">
@@ -148,11 +148,19 @@ export default function RequestQuote() {
             <button
               type="submit"
               disabled={submitting || !snap.email.trim()}
-              className={`w-full py-3 rounded-xl text-sm font-extrabold uppercase tracking-wide transition-all duration-200 cursor-pointer ${
+              className={`w-full py-3.5 rounded-xl text-sm font-extrabold uppercase tracking-widest transition-all duration-200 cursor-pointer ${
                 submitting || !snap.email.trim()
                   ? "bg-surface-3 text-text-muted cursor-not-allowed"
-                  : "bg-text-primary text-surface-0 hover:bg-white/90 active:scale-[0.99]"
+                  : "bg-accent-orange text-white hover:brightness-110 active:scale-[0.99] shadow-[0_4px_24px_rgba(255,61,0,0.25)]"
               }`}
+              style={
+                !submitting && snap.email.trim()
+                  ? {
+                      background:
+                        "linear-gradient(135deg, #ff3d00, #e63500)",
+                    }
+                  : undefined
+              }
             >
               {submitting ? "Sending…" : "Request Quote"}
             </button>
