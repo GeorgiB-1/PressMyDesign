@@ -7,6 +7,7 @@ import TShirtViewer from "./TShirtViewer"
 import ColorPicker from "./ColorPicker"
 import PrintOptions from "./PrintOptions"
 import DesignUploader from "./DesignUploader"
+import QuantitySelector from "./QuantitySelector"
 import RequestQuote from "./RequestQuote"
 import Section from "./ui/Section"
 import SocialProof from "./SocialProof"
@@ -122,11 +123,22 @@ export default function App() {
               <DesignUploader />
             </div>
 
-            {/* 04 Quote */}
+            {/* 04 Quantity */}
             <div className="bg-white/[0.02] border border-white/[0.06] rounded-[14px] p-6">
               <div className="flex items-center gap-2.5 mb-4">
                 <span className="w-[26px] h-[26px] rounded-full bg-accent-purple/10 text-accent-purple flex items-center justify-center text-[11px] font-bold">
                   04
+                </span>
+                <h3 className="text-[15px] font-semibold">Select Quantity</h3>
+              </div>
+              <QuantitySelector />
+            </div>
+
+            {/* 05 Quote */}
+            <div className="bg-white/[0.02] border border-white/[0.06] rounded-[14px] p-6">
+              <div className="flex items-center gap-2.5 mb-4">
+                <span className="w-[26px] h-[26px] rounded-full bg-accent-purple/10 text-accent-purple flex items-center justify-center text-[11px] font-bold">
+                  05
                 </span>
                 <h3 className="text-[15px] font-semibold">Get a Quote</h3>
               </div>

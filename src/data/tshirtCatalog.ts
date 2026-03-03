@@ -50,9 +50,13 @@ export const SIZES = ["S", "M", "L", "XL", "2XL", "3XL"] as const
 export type Size = (typeof SIZES)[number]
 
 // ─── Pricing ────────────────────────────────────────────────────
-export const TOTAL_QTY = 100
-export const BASE_PRICE = 399.0
+export const MIN_QTY = 25
+export const DEFAULT_QTY = 100
+export const PRICE_PER_SHIRT = 3.99
 export const BACK_PRINT_SURCHARGE_PER_SHIRT = 2.5
+
+// Preset quantity options for the selector
+export const QTY_PRESETS = [25, 50, 100, 150, 200, 250, 500] as const
 
 // ─── Print Zones ────────────────────────────────────────────────
 // Coordinates as percentages of the image dimensions (0-100)

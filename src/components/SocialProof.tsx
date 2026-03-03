@@ -1,12 +1,12 @@
 const GALLERY = [
-  { label: "Team Event", customer: "TechFlow Inc", qty: "200 tees", bg: "#1a1a1a" },
-  { label: "Brand Merch", customer: "BrandLab Agency", qty: "150 tees", bg: "#1b2a4a" },
-  { label: "Festival Crew", customer: "Coastal Events", qty: "500 tees", bg: "#1e5631" },
-  { label: "Sports Team", customer: "Riverside FC", qty: "100 tees", bg: "#c0392b" },
-  { label: "Startup Launch", customer: "NovaTech", qty: "250 tees", bg: "#7b2d8e" },
-  { label: "Charity Run", customer: "RunForHope", qty: "300 tees", bg: "#e67e22" },
-  { label: "University Club", customer: "UCLA Robotics", qty: "80 tees", bg: "#2471a3" },
-  { label: "Wedding Party", customer: "The Johnsons", qty: "60 tees", bg: "#555" },
+  { label: "Team Event", customer: "TechFlow Inc", qty: "200 tees", bg: "#1a1a1a", img: "/gallery/1.jpg" },
+  { label: "Brand Merch", customer: "BrandLab Agency", qty: "150 tees", bg: "#1b2a4a", img: "/gallery/2.jpg" },
+  { label: "Festival Crew", customer: "Coastal Events", qty: "500 tees", bg: "#1e5631", img: "/gallery/3.jpg" },
+  { label: "Sports Team", customer: "Riverside FC", qty: "100 tees", bg: "#c0392b", img: "/gallery/4.jpg" },
+  { label: "Startup Launch", customer: "NovaTech", qty: "250 tees", bg: "#7b2d8e", img: "/gallery/5.jpg" },
+  { label: "Charity Run", customer: "RunForHope", qty: "300 tees", bg: "#e67e22", img: "/gallery/6.jpg" },
+  { label: "University Club", customer: "UCLA Robotics", qty: "80 tees", bg: "#2471a3", img: "/gallery/7.jpg" },
+  { label: "Wedding Party", customer: "The Johnsons", qty: "60 tees", bg: "#555", img: "/gallery/8.jpg" },
 ]
 
 const STATS = [
@@ -24,6 +24,7 @@ const REVIEWS_PHOTO = [
     role: "Ops Manager, TechFlow Inc",
     detail: "200 Black Tees \u00b7 Full Front Print",
     bg: "#1a1a1a",
+    img: "/reviews/1.jpg",
   },
   {
     quote:
@@ -32,6 +33,7 @@ const REVIEWS_PHOTO = [
     role: "Creative Director, BrandLab",
     detail: "150 Navy Tees \u00b7 Left Chest",
     bg: "#1b2a4a",
+    img: "/reviews/2.jpg",
   },
   {
     quote:
@@ -40,6 +42,7 @@ const REVIEWS_PHOTO = [
     role: "Founder, Coastal Events Co",
     detail: "100 Red Tees \u00b7 Full Front Print",
     bg: "#c0392b",
+    img: "/reviews/3.jpg",
   },
 ]
 
@@ -93,21 +96,12 @@ export default function SocialProof() {
               className="rounded-[14px] overflow-hidden relative border border-white/[0.06] cursor-pointer transition-transform duration-300 hover:scale-[1.02]"
               style={{ aspectRatio: "4/5", background: p.bg }}
             >
-              {/* Placeholder content for gallery image */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <svg
-                  width="40"
-                  height="40"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="rgba(255,255,255,0.15)"
-                  strokeWidth="1.5"
-                >
-                  <rect x="3" y="3" width="18" height="18" rx="2" />
-                  <circle cx="8.5" cy="8.5" r="1.5" />
-                  <path d="M21 15l-5-5L5 21" />
-                </svg>
-              </div>
+              <img
+                src={p.img}
+                alt={p.label}
+                className="absolute inset-0 w-full h-full object-cover"
+                onError={(e) => { (e.target as HTMLImageElement).style.display = "none" }}
+              />
               <div
                 className="absolute bottom-0 left-0 right-0 px-3.5 pb-3.5 pt-10"
                 style={{
@@ -162,21 +156,15 @@ export default function SocialProof() {
               className="bg-white/[0.02] border border-white/[0.06] rounded-[14px] overflow-hidden"
             >
               <div
-                className="w-full flex items-center justify-center"
+                className="w-full overflow-hidden"
                 style={{ aspectRatio: "4/3", background: t.bg }}
               >
-                <svg
-                  width="40"
-                  height="40"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="rgba(255,255,255,0.15)"
-                  strokeWidth="1.5"
-                >
-                  <rect x="3" y="3" width="18" height="18" rx="2" />
-                  <circle cx="8.5" cy="8.5" r="1.5" />
-                  <path d="M21 15l-5-5L5 21" />
-                </svg>
+                <img
+                  src={t.img}
+                  alt={`${t.name} order`}
+                  className="w-full h-full object-cover"
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = "none" }}
+                />
               </div>
               <div className="p-5">
                 <p className="text-gold tracking-widest mb-2.5 text-sm">

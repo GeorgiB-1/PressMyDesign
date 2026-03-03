@@ -3,9 +3,8 @@ import { useSnapshot } from "valtio"
 import { motion, AnimatePresence } from "framer-motion"
 import state from "../store"
 import {
-  BASE_PRICE,
+  PRICE_PER_SHIRT,
   BACK_PRINT_SURCHARGE_PER_SHIRT,
-  TOTAL_QTY,
 } from "../data/tshirtCatalog"
 
 const QUOTE_WEBHOOK_URL = "https://hook.us2.make.com/PLACEHOLDER"
@@ -14,10 +13,11 @@ export default function RequestQuote() {
   const snap = useSnapshot(state)
   const [submitting, setSubmitting] = useState(false)
 
+  const baseTotal = PRICE_PER_SHIRT * snap.quantity
   const backSurcharge =
-    snap.backPrint !== "none" ? BACK_PRINT_SURCHARGE_PER_SHIRT * TOTAL_QTY : 0
-  const total = BASE_PRICE + backSurcharge
-  const perShirt = total / TOTAL_QTY
+    snap.backPrint !== "none" ? BACK_PRINT_SURCHARGE_PER_SHIRT * snap.quantity : 0
+  const total = baseTotal + backSurcharge
+  const perShirt = total / snap.quantity
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -38,6 +38,7 @@ export default function RequestQuote() {
           colorName: snap.colorName,
           frontPrint: snap.frontPrint,
           backPrint: snap.backPrint,
+          quantity: snap.quantity,
           hasDesign: !!(snap.frontDesignImage || snap.backDesignImage),
           totalPrice: total,
         }),
@@ -58,8 +59,8 @@ export default function RequestQuote() {
       {/* Pricing card */}
       <div className="bg-surface-1 border border-border rounded-xl px-4 py-3">
         <div className="flex justify-between text-xs text-text-secondary">
-          <span>Base Price ({TOTAL_QTY} shirts)</span>
-          <span>${BASE_PRICE.toFixed(2)}</span>
+          <span>Base Price ({snap.quantity} shirts &times; ${PRICE_PER_SHIRT.toFixed(2)})</span>
+          <span>${baseTotal.toFixed(2)}</span>
         </div>
 
         {backSurcharge > 0 && (
@@ -131,7 +132,7 @@ export default function RequestQuote() {
             {/* Notes */}
             <textarea
               rows={3}
-              placeholder="How many shirts? Any special requirements?"
+              placeholder="Any special requirements? (sizes, deadline, etc.)"
               value={snap.quoteNotes}
               onChange={(e) => (state.quoteNotes = e.target.value)}
               className="w-full bg-surface-1 border border-border rounded-lg text-text-primary text-sm px-3 py-2.5 outline-none focus:border-accent/50 transition-colors placeholder:text-text-muted resize-none"

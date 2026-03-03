@@ -1,5 +1,5 @@
 import { proxy } from "valtio"
-import { TSHIRT_COLORS } from "../data/tshirtCatalog"
+import { TSHIRT_COLORS, DEFAULT_QTY } from "../data/tshirtCatalog"
 import type { PrintLocation } from "../data/tshirtCatalog"
 
 // Read email from URL params on load
@@ -10,6 +10,9 @@ const state = proxy({
   color: TSHIRT_COLORS[0].hex,
   colorName: TSHIRT_COLORS[0].name,
   colorSlug: TSHIRT_COLORS[0].slug,
+
+  // Quantity
+  quantity: DEFAULT_QTY,
 
   // Print locations
   frontPrint: "none" as PrintLocation,

@@ -1,7 +1,7 @@
 import { useSnapshot } from "valtio"
 import state from "../store"
 import type { PrintLocation } from "../data/tshirtCatalog"
-import { BACK_PRINT_SURCHARGE_PER_SHIRT, TOTAL_QTY } from "../data/tshirtCatalog"
+import { BACK_PRINT_SURCHARGE_PER_SHIRT } from "../data/tshirtCatalog"
 
 const FRONT_OPTIONS: { value: PrintLocation; label: string }[] = [
   { value: "none", label: "No Front Print" },
@@ -16,7 +16,7 @@ const BACK_OPTIONS: { value: PrintLocation; label: string }[] = [
 
 export default function PrintOptions() {
   const snap = useSnapshot(state)
-  const surchargeTotal = BACK_PRINT_SURCHARGE_PER_SHIRT * TOTAL_QTY
+  const surchargeTotal = BACK_PRINT_SURCHARGE_PER_SHIRT * snap.quantity
 
   return (
     <div className="flex flex-col gap-2">
@@ -76,7 +76,7 @@ export default function PrintOptions() {
       {snap.backPrint !== "none" && (
         <div className="text-[11px] text-warning bg-warning/10 border border-warning/20 rounded-lg px-3 py-2">
           Back print adds <strong>${surchargeTotal.toFixed(2)}</strong> to your
-          order ({TOTAL_QTY} x ${BACK_PRINT_SURCHARGE_PER_SHIRT.toFixed(2)})
+          order ({snap.quantity} x ${BACK_PRINT_SURCHARGE_PER_SHIRT.toFixed(2)})
         </div>
       )}
     </div>
