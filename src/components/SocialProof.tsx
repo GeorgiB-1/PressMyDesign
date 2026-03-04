@@ -2,7 +2,7 @@ const FEATURES = [
   {
     title: "Incredible Image Quality",
     desc: "Our custom T-shirts are printed with specially formulated inks that deliver deeper colors and a broader color gamut. We ensure precise color registration by adhering to G7 Color Standards, with weekly certification for near-perfect machine linearization.",
-    img: "/gallery/1.jpg",
+    img: "/gallery/1.webp",
     bg: "#1a1a1a",
   },
   {
@@ -14,19 +14,19 @@ const FEATURES = [
   {
     title: "Super Fine Details",
     desc: "Our DTF prints are capable of capturing details as fine as 3 pixels, allowing us to accurately reproduce all design accents and small text, even if they're isolated from other parts of the design.",
-    img: "/gallery/3.jpg",
+    img: "/gallery/3.webp",
     bg: "#1e5631",
   },
   {
     title: "Beautiful Color Contrast",
     desc: "Vibrant colors and accurate color representation are crucial for our customers when ordering custom t-shirts. Our prints deliver vivid colors on any garment, regardless of the color combination.",
-    img: "/gallery/4.jpg",
+    img: "/gallery/4.webp",
     bg: "#7b2d8e",
   },
   {
     title: "Stretchability means Durability",
     desc: "The stretch test showcases the durability of our DTF transfers. You won't see any cracking when stretching them. We've subjected them to over 100 washes, with minimal degradation.",
-    img: "/gallery/5.jpg",
+    img: "/gallery/5.webp",
     bg: "#c0392b",
   },
 ]
@@ -41,42 +41,42 @@ const STATS = [
 const REVIEWS_PHOTO = [
   {
     quote: "I love the T Shirts good quality my family love them too, wish had children sizes. We will be using for our next year for our Family Reunion. I referred a lot of people to your company.",
-    img: "/reviews/1.jpg",
+    img: "/reviews/1.avif",
     bg: "#1a1a1a",
   },
   {
     quote: "Amazing Quality for the price, can't believe it. Very happy with the band shirts I ordered, now putting in another order for business shirts.",
-    img: "/reviews/2.jpg",
+    img: "/reviews/2.avif",
     bg: "#1b2a4a",
   },
   {
     quote: "INCREDIBLE WORK! OUR SUMMER YOUTH PROGRAM IS A STAND OUT! WE WILL USE PRESS MY DESIGN AGAIN! VERY SATISFIED!",
-    img: "/reviews/3.jpg",
+    img: "/reviews/3.avif",
     bg: "#1e5631",
   },
   {
     quote: "Nice soft T-shirts. Printing looks great",
-    img: "/reviews/4.jpg",
+    img: "/reviews/4.avif",
     bg: "#c0392b",
   },
   {
     quote: "Amazing!!!!",
-    img: "/reviews/5.jpg",
+    img: "/reviews/5.avif",
     bg: "#7b2d8e",
   },
   {
     quote: "Incredibly fast and wonderful quality. I will definitely be using them again.",
-    img: "/reviews/6.jpg",
+    img: "/reviews/6.avif",
     bg: "#e67e22",
   },
   {
     quote: "The shirts and the quality are amazing 100% pleased",
-    img: "/reviews/7.jpg",
+    img: "/reviews/7.avif",
     bg: "#2471a3",
   },
   {
     quote: "I love the quality of their shirts. Soft Tshirts that don't shrink and you can't beat their pricing!!! My new place to shop for merchandise. \ud83d\udc4f\ud83c\udffd\ud83d\udc4f\ud83c\udffd\ud83d\udc4f\ud83c\udffd",
-    img: "/reviews/8.jpg",
+    img: "/reviews/8.avif",
     bg: "#555",
   },
 ]
