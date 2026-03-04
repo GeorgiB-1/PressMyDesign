@@ -1,12 +1,34 @@
-const GALLERY = [
-  { label: "Team Event", customer: "TechFlow Inc", qty: "200 tees", bg: "#1a1a1a", img: "/gallery/1.jpg" },
-  { label: "Brand Merch", customer: "BrandLab Agency", qty: "150 tees", bg: "#1b2a4a", img: "/gallery/2.jpg" },
-  { label: "Festival Crew", customer: "Coastal Events", qty: "500 tees", bg: "#1e5631", img: "/gallery/3.jpg" },
-  { label: "Sports Team", customer: "Riverside FC", qty: "100 tees", bg: "#c0392b", img: "/gallery/4.jpg" },
-  { label: "Startup Launch", customer: "NovaTech", qty: "250 tees", bg: "#7b2d8e", img: "/gallery/5.jpg" },
-  { label: "Charity Run", customer: "RunForHope", qty: "300 tees", bg: "#e67e22", img: "/gallery/6.jpg" },
-  { label: "University Club", customer: "UCLA Robotics", qty: "80 tees", bg: "#2471a3", img: "/gallery/7.jpg" },
-  { label: "Wedding Party", customer: "The Johnsons", qty: "60 tees", bg: "#555", img: "/gallery/8.jpg" },
+const FEATURES = [
+  {
+    title: "Incredible Image Quality",
+    desc: "Our custom T-shirts are printed with specially formulated inks that deliver deeper colors and a broader color gamut. We ensure precise color registration by adhering to G7 Color Standards, with weekly certification for near-perfect machine linearization.",
+    img: "/gallery/1.jpg",
+    bg: "#1a1a1a",
+  },
+  {
+    title: "Crisp Bright Whites",
+    desc: "We use the brightest white ink in the industry, offering exceptional stretchability. Every design, whether it includes white or not, is underbased with white ink to prevent any dye migration.",
+    img: "/gallery/2.jpg",
+    bg: "#1b2a4a",
+  },
+  {
+    title: "Super Fine Details",
+    desc: "Our DTF prints are capable of capturing details as fine as 3 pixels, allowing us to accurately reproduce all design accents and small text, even if they're isolated from other parts of the design.",
+    img: "/gallery/3.jpg",
+    bg: "#1e5631",
+  },
+  {
+    title: "Beautiful Color Contrast",
+    desc: "Vibrant colors and accurate color representation are crucial for our customers when ordering custom t-shirts. Our prints deliver vivid colors on any garment, regardless of the color combination.",
+    img: "/gallery/4.jpg",
+    bg: "#7b2d8e",
+  },
+  {
+    title: "Stretchability means Durability",
+    desc: "The stretch test showcases the durability of our DTF transfers. You won't see any cracking when stretching them. We've subjected them to over 100 washes, with minimal degradation.",
+    img: "/gallery/5.jpg",
+    bg: "#c0392b",
+  },
 ]
 
 const STATS = [
@@ -18,55 +40,59 @@ const STATS = [
 
 const REVIEWS_PHOTO = [
   {
-    quote:
-      "We ordered 200 tees for our company retreat. Print quality was incredible \u2014 vibrant colours, soft feel. Everyone thought we paid double what we did.",
-    name: "Marcus R.",
-    role: "Ops Manager, TechFlow Inc",
-    detail: "200 Black Tees \u00b7 Full Front Print",
-    bg: "#1a1a1a",
+    quote: "I love the T Shirts good quality my family love them too, wish had children sizes. We will be using for our next year for our Family Reunion. I referred a lot of people to your company.",
     img: "/reviews/1.jpg",
+    bg: "#1a1a1a",
   },
   {
-    quote:
-      "The AI mockup sold our client before we even ordered. They saw the design on a real model and approved immediately. Total game changer for approvals.",
-    name: "Sarah K.",
-    role: "Creative Director, BrandLab",
-    detail: "150 Navy Tees \u00b7 Left Chest",
-    bg: "#1b2a4a",
+    quote: "Amazing Quality for the price, can't believe it. Very happy with the band shirts I ordered, now putting in another order for business shirts.",
     img: "/reviews/2.jpg",
+    bg: "#1b2a4a",
   },
   {
-    quote:
-      "$3.99 a shirt is insane. We switched from our old printer and saved over $400 on our last order. Same Gildan Softstyle quality, way less money.",
-    name: "Jake T.",
-    role: "Founder, Coastal Events Co",
-    detail: "100 Red Tees \u00b7 Full Front Print",
-    bg: "#c0392b",
+    quote: "INCREDIBLE WORK! OUR SUMMER YOUTH PROGRAM IS A STAND OUT! WE WILL USE PRESS MY DESIGN AGAIN! VERY SATISFIED!",
     img: "/reviews/3.jpg",
+    bg: "#1e5631",
+  },
+  {
+    quote: "Nice soft T-shirts. Printing looks great",
+    img: "/reviews/4.jpg",
+    bg: "#c0392b",
+  },
+  {
+    quote: "Amazing!!!!",
+    img: "/reviews/5.jpg",
+    bg: "#7b2d8e",
+  },
+  {
+    quote: "Incredibly fast and wonderful quality. I will definitely be using them again.",
+    img: "/reviews/6.jpg",
+    bg: "#e67e22",
+  },
+  {
+    quote: "The shirts and the quality are amazing 100% pleased",
+    img: "/reviews/7.jpg",
+    bg: "#2471a3",
+  },
+  {
+    quote: "I love the quality of their shirts. Soft Tshirts that don't shrink and you can't beat their pricing!!! My new place to shop for merchandise. \ud83d\udc4f\ud83c\udffd\ud83d\udc4f\ud83c\udffd\ud83d\udc4f\ud83c\udffd",
+    img: "/reviews/8.jpg",
+    bg: "#555",
   },
 ]
 
 const REVIEWS_TEXT = [
   {
-    quote:
-      "Our nonprofit needed 300 shirts on a tight budget. PressMyDesign came through \u2014 $3.99 each, free shipping, and they arrived a day early. Will order again for our fall fundraiser.",
-    name: "Diana L.",
-    role: "Director, Hope Foundation",
-    detail: "300 White Tees",
+    quote: "I like the design, it came out the exact way I wanted it to come I do like the t-shirts and how they feel, great job",
+    name: "Sultann F.",
   },
   {
-    quote:
-      "I run a screen printing shop and even I use PressMyDesign for DTF jobs. Their quality is better than what I can produce in-house for small runs. No shame in outsourcing to the best.",
-    name: "Chris M.",
-    role: "Owner, InkWorks Studio",
-    detail: "100 Charcoal Tees",
+    quote: "I received my order and the shirts are of great quality. My logo is very vibrant and well done. You really can't beat this price!!!",
+    name: "Billie W.",
   },
   {
-    quote:
-      "Needed custom tees for my daughter's birthday party \u2014 25 shirts with her artwork on them. The mockup showed exactly how they'd look. Ordered Friday, had them Wednesday. Kids loved them.",
-    name: "Rachel P.",
-    role: "Happy Customer",
-    detail: "25 Sand Tees",
+    quote: "Shirts are nice and soft, print is crisp and delivery was quicker than I was told! I will be ordering again.",
+    name: "Tracie C.",
   },
 ]
 
@@ -77,41 +103,43 @@ export default function SocialProof() {
         {/* Header */}
         <div className="text-center mb-10">
           <p className="text-[11px] uppercase tracking-[0.14em] text-accent-purple font-bold mb-2">
-            Real Customers. Real Prints.
+            Quality You Can See & Feel
           </p>
           <h2 className="text-[28px] font-bold tracking-tight">
-            Here's What Our Customers Are Printing
+            Why Choose Us?
           </h2>
-          <p className="text-sm text-text-secondary/40 mt-2 max-w-[480px] mx-auto">
-            Every order printed with DTF technology on Gildan Softstyle tees. See
-            the quality for yourself.
+          <p className="text-sm text-text-secondary/40 mt-2 max-w-[520px] mx-auto">
+            Every order printed with DTF technology on Gildan Softstyle tees.
+            Here's what sets our prints apart.
           </p>
         </div>
 
-        {/* Photo gallery 2x4 */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-12">
-          {GALLERY.map((p, i) => (
+        {/* Feature cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
+          {FEATURES.map((f, i) => (
             <div
               key={i}
-              className="rounded-[14px] overflow-hidden relative border border-white/[0.06] cursor-pointer transition-transform duration-300 hover:scale-[1.02]"
-              style={{ aspectRatio: "4/5", background: p.bg }}
+              className={`bg-white/[0.02] border border-white/[0.06] rounded-[14px] overflow-hidden transition-transform duration-300 hover:scale-[1.02] ${
+                i >= 3 ? "sm:col-span-1 lg:col-span-1" : ""
+              }`}
             >
-              <img
-                src={p.img}
-                alt={p.label}
-                className="absolute inset-0 w-full h-full object-cover"
-                onError={(e) => { (e.target as HTMLImageElement).style.display = "none" }}
-              />
               <div
-                className="absolute bottom-0 left-0 right-0 px-3.5 pb-3.5 pt-10"
-                style={{
-                  background:
-                    "linear-gradient(transparent, rgba(0,0,0,0.85))",
-                }}
+                className="w-full overflow-hidden"
+                style={{ aspectRatio: "4/3", background: f.bg }}
               >
-                <p className="text-[13px] font-bold text-white">{p.label}</p>
-                <p className="text-[11px] text-white/50">
-                  {p.customer} &middot; {p.qty}
+                <img
+                  src={f.img}
+                  alt={f.title}
+                  className="w-full h-full object-cover"
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = "none" }}
+                />
+              </div>
+              <div className="p-5">
+                <p className="text-[15px] font-bold text-text-primary mb-1.5">
+                  {f.title}
+                </p>
+                <p className="text-[13px] text-text-secondary/50 leading-relaxed">
+                  {f.desc}
                 </p>
               </div>
             </div>
@@ -149,7 +177,7 @@ export default function SocialProof() {
         </div>
 
         {/* Photo reviews */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
           {REVIEWS_PHOTO.map((t, i) => (
             <div
               key={i}
@@ -161,27 +189,18 @@ export default function SocialProof() {
               >
                 <img
                   src={t.img}
-                  alt={`${t.name} order`}
+                  alt="Customer review"
                   className="w-full h-full object-cover"
                   onError={(e) => { (e.target as HTMLImageElement).style.display = "none" }}
                 />
               </div>
-              <div className="p-5">
-                <p className="text-gold tracking-widest mb-2.5 text-sm">
+              <div className="p-4">
+                <p className="text-gold tracking-widest mb-2 text-sm">
                   ★★★★★
                 </p>
-                <p className="text-sm text-text-secondary/65 leading-relaxed italic mb-3.5">
+                <p className="text-[13px] text-text-secondary/65 leading-relaxed italic">
                   &ldquo;{t.quote}&rdquo;
                 </p>
-                <div className="flex justify-between items-end">
-                  <div>
-                    <p className="text-sm font-semibold">{t.name}</p>
-                    <p className="text-xs text-text-secondary/35">{t.role}</p>
-                  </div>
-                  <span className="text-[10px] px-2.5 py-1 rounded-full font-semibold bg-accent-orange/[0.08] text-accent-orange/70 tracking-wide whitespace-nowrap">
-                    {t.detail}
-                  </span>
-                </div>
               </div>
             </div>
           ))}
@@ -200,15 +219,7 @@ export default function SocialProof() {
               <p className="text-sm text-text-secondary/65 leading-relaxed italic mb-3.5">
                 &ldquo;{t.quote}&rdquo;
               </p>
-              <div className="flex justify-between items-end">
-                <div>
-                  <p className="text-sm font-semibold">{t.name}</p>
-                  <p className="text-xs text-text-secondary/35">{t.role}</p>
-                </div>
-                <span className="text-[10px] px-2.5 py-1 rounded-full font-semibold bg-accent-purple/[0.08] text-accent-purple/60 tracking-wide whitespace-nowrap">
-                  {t.detail}
-                </span>
-              </div>
+              <p className="text-sm font-semibold">&mdash; {t.name}</p>
             </div>
           ))}
         </div>
