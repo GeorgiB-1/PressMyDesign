@@ -34,7 +34,7 @@ const FEATURES = [
 const STATS = [
   { val: "3,000+", label: "Orders Shipped", color: "#ff3d00" },
   { val: "100%", label: "Satisfaction Rate", color: "#22c55e" },
-  { val: "10\u201314", label: "Day Turnaround", color: "#8b5cf6" },
+  { val: "10\u201314", label: "Business Day Turnaround", color: "#8b5cf6" },
   { val: "$0", label: "Setup & Shipping", color: "#fbbf24" },
 ]
 
