@@ -11,7 +11,7 @@ const FAQS = [
   },
   {
     q: "How long does production take?",
-    a: "7-10 business days for most orders. Rush orders (3-5 days) available for an additional fee. We'll confirm timing when you approve your proof.",
+    a: "10-14 business days for most orders. We'll confirm timing when you approve your proof.",
   },
   {
     q: "Can I mix sizes in my order?",
